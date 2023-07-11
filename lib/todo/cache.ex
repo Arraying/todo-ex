@@ -10,7 +10,7 @@ defmodule Todo.Cache do
   end
 
   def init(_) do
-    Todo.Database.start("./persist")
+    Todo.Database.start
     {:ok, %{}}
   end
 
@@ -18,7 +18,7 @@ defmodule Todo.Cache do
     case Map.fetch(state, name) do
       {:ok, value} -> {:reply, value, state}
       :error ->
-        {:ok, new_server} = Todo.Server.start
+        {:ok, new_server} = Todo.Server.start(name)
         {:reply, new_server,  Map.put(state, name, new_server)}
     end
   end
